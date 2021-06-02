@@ -1,6 +1,14 @@
 package com.lowes.urlshortener.service;
 
+
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.lowes.urlshortener.model.URLModel;
@@ -12,7 +20,44 @@ public class URLService {
 	@Autowired
 	URLRepository urlRepository;
 	
-	public void save(URLModel url) {
-		urlRepository.save(url);
+	@Autowired
+	BaseConversion baseConversion;
+	
+	public URLModel save(URLModel url) throws UnsupportedEncodingException, URISyntaxException {
+		String fullUrl=url.getFullUrl();
+		URI uri=new URI(fullUrl);
+
+//		System.out.println("Req query="+uri.getPath());
+		String path=uri.getPath().substring(1,uri.getPath().length());
+		
+		String shortPath=baseConversion.encode(path);
+		
+//		String method=uri.getScheme();
+//		String host=uri.getHost();
+//		String port=String.valueOf(uri.getPort());
+//		
+//		String shortUri="";
+//		if(method!=null) {
+//			shortUri+=method+"://";
+//		}else {
+//			shortUri+="http://";
+//		}
+//		if(host!=null) {
+//			shortUri+=host;
+//		}
+//		
+//		shortUri+=":8080/"+shortPath;
+		
+		url.setShortUrl(shortPath);
+		
+		URLModel entity=urlRepository.save(url);
+		
+		
+		return entity;
+		
+	}
+
+	public String getOriginalUrl(String shortUrl) {
+		return urlRepository.getOriginalUrl(shortUrl);
 	}
 }

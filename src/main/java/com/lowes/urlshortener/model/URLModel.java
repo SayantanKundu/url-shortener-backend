@@ -19,18 +19,6 @@ public class URLModel {
 	private String fullUrl;
 	
 	private String shortUrl;
-	
-	@Override
-	public String toString() {
-		return "URLModel [id=" + id + ", fullUrl=" + fullUrl + ", shortUrl=" + shortUrl + "]";
-	}
-
-	public URLModel(Long id, String fullUrl, String shortUrl) {
-		super();
-		this.id = id;
-		this.fullUrl = fullUrl;
-		this.shortUrl = shortUrl;
-	}
 
 	public Long getId() {
 		return id;
@@ -56,4 +44,18 @@ public class URLModel {
 		this.shortUrl = shortUrl;
 	}
 
+	public URLModel(Long id, String fullUrl, String shortUrl) {
+		super();
+		this.id = id;
+		this.fullUrl = fullUrl;
+		this.shortUrl = shortUrl;
+	}
+
+	@Override
+	public String toString() {
+		return "URLModel [id=" + id + ", fullUrl=" + fullUrl + ", shortUrl=" + shortUrl + "]";
+	}
+	
+	
+	
 }
